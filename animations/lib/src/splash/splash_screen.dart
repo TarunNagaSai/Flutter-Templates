@@ -2,15 +2,14 @@ import 'package:animations/gen/assets.gen.dart';
 import 'package:animations/src/splash/arrow_up_animation.dart';
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<Home> createState() => _HomeState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with TickerProviderStateMixin {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   // Initialize the controller in initState because `this` isn't available at
   // field initialization time.
   late final AnimationController lottieController;

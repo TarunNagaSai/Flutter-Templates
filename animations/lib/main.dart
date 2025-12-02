@@ -1,38 +1,90 @@
+import 'package:animations/core/theme.dart';
 import 'package:animations/src/splash/splash_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  /// Theme data variables
+  final materialLightTheme = MaterialTheme(TextTheme()).light();
+  final materialDarkTheme = MaterialTheme(TextTheme()).dark();
+  late final MaterialBasedCupertinoThemeData cupertinoDarkTheme;
+  late final MaterialBasedCupertinoThemeData cupertinoLightTheme;
+  ThemeMode? themeMode = ThemeMode.system; // initial brightness
+
+  @override
+  void initState() {
+    const darkDefaultCupertinoTheme = CupertinoThemeData(
+      brightness: Brightness.dark,
+    );
+
+    cupertinoDarkTheme = MaterialBasedCupertinoThemeData(
+      materialTheme: materialDarkTheme.copyWith(
+        cupertinoOverrideTheme: CupertinoThemeData(
+          brightness: Brightness.dark,
+          barBackgroundColor: darkDefaultCupertinoTheme.barBackgroundColor,
+          textTheme: CupertinoTextThemeData(
+            primaryColor: Colors.white,
+            navActionTextStyle: darkDefaultCupertinoTheme
+                .textTheme
+                .navActionTextStyle
+                .copyWith(color: const Color(0xF0F9F9F9)),
+            navLargeTitleTextStyle: darkDefaultCupertinoTheme
+                .textTheme
+                .navLargeTitleTextStyle
+                .copyWith(color: const Color(0xF0F9F9F9)),
+          ),
+        ),
+      ),
+    );
+
+    cupertinoLightTheme = MaterialBasedCupertinoThemeData(
+      materialTheme: materialLightTheme,
+    );
+
+    super.initState();
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+    return PlatformProvider(
+      settings: PlatformSettingsData(
+        iosUsesMaterialWidgets: true,
+        iosUseZeroPaddingForAppbarPlatformIcon: true,
       ),
-      debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      builder: (context) => PlatformTheme(
+        themeMode: themeMode,
+        materialLightTheme: materialLightTheme,
+        materialDarkTheme: materialDarkTheme,
+        cupertinoLightTheme: cupertinoLightTheme,
+        cupertinoDarkTheme: cupertinoDarkTheme,
+        matchCupertinoSystemChromeBrightness: true,
+        onThemeModeChanged: (themeMode) {
+          this.themeMode = themeMode; /* you can save to storage */
+        },
+        builder: (context) => const PlatformApp(
+          localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+            DefaultMaterialLocalizations.delegate,
+            DefaultWidgetsLocalizations.delegate,
+            DefaultCupertinoLocalizations.delegate,
+          ],
+          title: 'Flutter Platform Widgets',
+          home: Home(),
+        ),
+      ),
+      // ),
     );
   }
 }
