@@ -1,11 +1,13 @@
 import 'package:animations/core/theme.dart';
-import 'package:animations/src/splash/splash_screen.dart';
+import 'package:animations/src/home/home.dart';
+import 'package:animations/src/providers/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -21,7 +23,6 @@ class _MyAppState extends State<MyApp> {
   final materialDarkTheme = MaterialTheme(TextTheme()).dark();
   late final MaterialBasedCupertinoThemeData cupertinoDarkTheme;
   late final MaterialBasedCupertinoThemeData cupertinoLightTheme;
-  ThemeMode? themeMode = ThemeMode.system; // initial brightness
 
   @override
   void initState() {
@@ -59,32 +60,37 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return PlatformProvider(
-      settings: PlatformSettingsData(
-        iosUsesMaterialWidgets: true,
-        iosUseZeroPaddingForAppbarPlatformIcon: true,
-      ),
-      builder: (context) => PlatformTheme(
-        themeMode: themeMode,
-        materialLightTheme: materialLightTheme,
-        materialDarkTheme: materialDarkTheme,
-        cupertinoLightTheme: cupertinoLightTheme,
-        cupertinoDarkTheme: cupertinoDarkTheme,
-        matchCupertinoSystemChromeBrightness: true,
-        onThemeModeChanged: (themeMode) {
-          this.themeMode = themeMode; /* you can save to storage */
-        },
-        builder: (context) => const PlatformApp(
-          localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-            DefaultMaterialLocalizations.delegate,
-            DefaultWidgetsLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          title: 'Flutter Platform Widgets',
-          home: Home(),
-        ),
-      ),
-      // ),
+    return Consumer(
+      builder: (context, ref, _) {
+        final themeMode = ref.watch(themeModeProvider);
+
+        return PlatformProvider(
+          settings: PlatformSettingsData(
+            iosUsesMaterialWidgets: true,
+            iosUseZeroPaddingForAppbarPlatformIcon: true,
+          ),
+          builder: (context) => PlatformTheme(
+            themeMode: themeMode,
+            materialLightTheme: materialLightTheme,
+            materialDarkTheme: materialDarkTheme,
+            cupertinoLightTheme: cupertinoLightTheme,
+            cupertinoDarkTheme: cupertinoDarkTheme,
+            matchCupertinoSystemChromeBrightness: true,
+
+            builder: (context) => const PlatformApp(
+              title: 'Flutter UI',
+              localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+                DefaultMaterialLocalizations.delegate,
+                DefaultWidgetsLocalizations.delegate,
+                DefaultCupertinoLocalizations.delegate,
+              ],
+              debugShowCheckedModeBanner: false,
+              home: Home(),
+            ),
+          ),
+          // ),
+        );
+      },
     );
   }
 }

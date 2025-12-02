@@ -45,6 +45,10 @@ class ArrowUpAnimationState extends State<ArrowUpAnimation>
     _fadeAnimationController.forward();
   }
 
+  void startFadeOut() {
+    _fadeAnimationController.reverse();
+  }
+
   @override
   void dispose() {
     _controller.dispose();

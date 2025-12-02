@@ -58,6 +58,9 @@ dependencies:
   auto_route: ^11.0.0
   lottie: ^3.3.2
   flutter_platform_widgets: ^9.0.0
+  flutter_sticky_header: ^0.8.0
+  riverpod: ^2.6.1
+  flutter_riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:
