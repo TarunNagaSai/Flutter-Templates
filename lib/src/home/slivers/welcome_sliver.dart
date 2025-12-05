@@ -6,8 +6,10 @@ class WelcomeSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Assets.lottie.welcome.lottie(animate: true, repeat: false),
+    return SliverFillRemaining(
+      child: Center(
+        child: Assets.lottie.welcome.lottie(animate: true, repeat: false),
+      ),
     );
   }
 }

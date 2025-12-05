@@ -16,11 +16,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       GlobalKey<ArrowUpAnimationState>();
 
   ScrollController scrollController = ScrollController();
+  List<Widget> sliverChildren = [];
 
   bool _scrollEnabled = false;
+
   @override
   void initState() {
-    super.initState();
     lottieController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: this,
@@ -37,11 +38,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
     scrollController.addListener(() {
       final direction = scrollController.position.userScrollDirection;
-
       if (direction == ScrollDirection.reverse) {
         _childKey.currentState?.startFadeOut();
       }
     });
+
+    sliverChildren = SliverSections.generateSliverList();
+
+    super.initState();
   }
 
   @override
@@ -56,14 +60,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       body: Stack(
         children: [
           Positioned.fill(
-            child: CustomScrollView(
+            child: Scrollbar(
               controller: scrollController,
-              physics: const BouncingScrollPhysics(),
-
-              // _scrollEnabled
-              //     ? const BouncingScrollPhysics()
-              //     : const NeverScrollableScrollPhysics(),
-              slivers: sliverList,
+              child: CustomScrollView(
+                controller: scrollController,
+                physics: _scrollEnabled
+                    ? const BouncingScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
+                slivers: sliverChildren.isNotEmpty
+                    ? sliverChildren
+                    : [SliverSections.sliverList[0]],
+              ),
             ),
           ),
           // Your arrow

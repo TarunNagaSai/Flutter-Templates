@@ -7,29 +7,17 @@ class CardsSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildListDelegate([
-        SizedBox(height: 16),
-
-        ProductCard(
-          imageUrl:
-              "https://assets.turbologo.com/blog/en/2021/09/10093610/photo-camera-958x575.png",
-          title: "Nuts",
-          price: 500,
-        ),
-        SizedBox(height: 16),
-        Product3DCard(
-          modelUrl: 'assets/3d_models/medium-couch-877.glb',
-          title: 'Premium Couch',
-          price: 500,
-        ),
-        SizedBox(height: 16),
-
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedProductCard(),
-        ),
-      ]),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: [
+          Product3DCard(
+            modelUrl: 'assets/3d_models/medium-couch-877.glb',
+            title: 'Premium Couch',
+            price: 500,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -202,6 +190,70 @@ class _ProductCardState extends State<ProductCard>
   }
 }
 
+/// Elevated Button for a product card
+class ElevatedProductCard extends StatelessWidget {
+  const ElevatedProductCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: () {
+          // Card pressed action
+        },
+
+        /// splash radius should match border radius
+        borderRadius: BorderRadius.circular(12),
+        // style: ElevatedButton.styleFrom(
+        //   backgroundColor: Colors.white,
+        //   foregroundColor: Colors.black87,
+        //   elevation: 4,
+        //   padding: const EdgeInsets.all(16),
+        //   minimumSize: const Size(double.infinity, 120),
+        //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        //   shadowColor: Colors.black.withOpacity(0.1),
+        // ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              // Image
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  "https://assets.turbologo.com/blog/en/2021/09/10093610/photo-camera-958x575.png",
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Product Title',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text('₹1,299', style: TextTheme.of(context).headlineSmall),
+                    const SizedBox(height: 8),
+                    Text('Short description here...'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// 3d Model Product Card
 class Product3DCard extends StatefulWidget {
   const Product3DCard({
@@ -272,7 +324,7 @@ class _Product3DCardState extends State<Product3DCard> {
                     ),
                   ),
                 ),
-                Positioned(top: 8, right: 8, child: LikeButton()),
+                Positioned(top: 8, right: 0, child: LikeButton()),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Align(
@@ -314,7 +366,7 @@ class _Product3DCardState extends State<Product3DCard> {
                       ),
                       const SizedBox(height: 8),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.only(right: 2.0, left: 8.0),
                         child: Row(
                           mainAxisAlignment: .spaceBetween,
                           children: [
@@ -348,70 +400,6 @@ class _Product3DCardState extends State<Product3DCard> {
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Elevated Button for a product card
-class ElevatedProductCard extends StatelessWidget {
-  const ElevatedProductCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: () {
-          // Card pressed action
-        },
-
-        /// splash radius should match border radius
-        borderRadius: BorderRadius.circular(12),
-        // style: ElevatedButton.styleFrom(
-        //   backgroundColor: Colors.white,
-        //   foregroundColor: Colors.black87,
-        //   elevation: 4,
-        //   padding: const EdgeInsets.all(16),
-        //   minimumSize: const Size(double.infinity, 120),
-        //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        //   shadowColor: Colors.black.withOpacity(0.1),
-        // ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              // Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  "https://assets.turbologo.com/blog/en/2021/09/10093610/photo-camera-958x575.png",
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Content
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Product Title',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text('₹1,299', style: TextTheme.of(context).headlineSmall),
-                    const SizedBox(height: 8),
-                    Text('Short description here...'),
-                  ],
-                ),
-              ),
-            ],
           ),
         ),
       ),
