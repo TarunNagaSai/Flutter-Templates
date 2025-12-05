@@ -5,6 +5,6 @@ class LoadingSlivers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Clip Art Widgets Coming Soon!");
+    return Text("Loaders Widgets Coming Soon!");
   }
 }

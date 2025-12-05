@@ -1,5 +1,6 @@
 import 'package:animations/src/home/slivers/stacked_header.dart';
 import 'package:animations/src/providers/theme_provider.dart';
+import 'package:animations/src/providers/title_animation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,13 +36,28 @@ class _HeaderSliverState extends State<HeaderSliver>
                 mainAxisAlignment: .spaceBetween,
                 crossAxisAlignment: .end,
                 children: [
-                  Text(
-                    'Cards',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final title = ref.watch(titleModeProvider);
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) {
+                          return ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          );
+                        },
+                        child: Text(
+                          title,
+                          key: ValueKey(title),
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   ThemeWidget(isPinned: isPinned),
                 ],
@@ -60,9 +76,7 @@ class _HeaderSliverState extends State<HeaderSliver>
 /// A widget that toggles between light and dark theme icons with animation.
 class ThemeWidget extends StatefulWidget {
   const ThemeWidget({super.key, required this.isPinned});
-
   final bool isPinned;
-
   @override
   State<ThemeWidget> createState() => _ThemeWidgetState();
 }

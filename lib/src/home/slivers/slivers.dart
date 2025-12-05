@@ -3,7 +3,6 @@ import 'package:animations/src/home/slivers/cards_sliver.dart';
 import 'package:animations/src/home/slivers/clip_art_widgets.dart';
 import 'package:animations/src/home/slivers/custom_popups_slivers.dart';
 import 'package:animations/src/home/slivers/header_sliver.dart';
-import 'package:animations/src/home/slivers/live_activities.dart';
 import 'package:animations/src/home/slivers/loading_slivers.dart';
 import 'package:animations/src/home/slivers/local_custom_notifications.dart';
 import 'package:animations/src/home/slivers/parallax_effects.dart';
@@ -43,8 +42,21 @@ class SliverSections {
     accessabilityKey,
     parallaxKey,
     notificationsKey,
-    liveActivitiesKey,
     thankYouKey,
+  ];
+
+  static List<String> titles = [
+    "",
+    "",
+    "Cards",
+    "Clip Art",
+    "Scrollable",
+    "Loaders",
+    "Popup Keys",
+    "Accessability",
+    "Parallax Scrolling",
+    "Notifications",
+    "Thank You",
   ];
 
   /// A list of slivers used in the Home screen's CustomScrollView.
@@ -76,11 +88,8 @@ class SliverSections {
     /// Parallax effects
     ParallaxEffects(),
 
-    /// Custom Notifications
+    /// Custom Notifications, Dynamic isLand
     LocalCustomNotifications(),
-
-    ///Dynamic isLand
-    LiveActivities(),
 
     /// Thank you Sliver
     ThankyouSliver(),
@@ -92,14 +101,10 @@ class SliverSections {
     for (int index = 0; index < sliverKeys.length; index++) {
       if (index > 1) {
         updatedSliverList.add(
-          KeyedSubtree(
-            key: sliverKeys[index],
-            child: SliverToBoxAdapter(
-              child: LayoutWidget(
-                onPositionChanged: (val) {},
-                child: sliverList[index],
-              ),
-            ),
+          LayoutWidget(
+            title: titles[index],
+            sectionKey: sliverKeys[index],
+            child: sliverList[index],
           ),
         );
       } else {

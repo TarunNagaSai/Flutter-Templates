@@ -1,61 +1,44 @@
 import 'package:animations/src/home/animations/arrow_up_animation.dart';
 import 'package:animations/src/home/slivers/slivers.dart';
+import 'package:animations/src/providers/animation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
-  late final AnimationController lottieController;
+class _HomeState extends ConsumerState<Home> with TickerProviderStateMixin {
   final GlobalKey<ArrowUpAnimationState> _childKey =
       GlobalKey<ArrowUpAnimationState>();
 
   ScrollController scrollController = ScrollController();
   List<Widget> sliverChildren = [];
 
-  bool _scrollEnabled = false;
-
   @override
   void initState() {
-    lottieController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..forward();
-
-    lottieController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _childKey.currentState?.startFadeIn();
-        setState(() {
-          _scrollEnabled = true;
-        });
-      }
-    });
-
     scrollController.addListener(() {
       final direction = scrollController.position.userScrollDirection;
       if (direction == ScrollDirection.reverse) {
         _childKey.currentState?.startFadeOut();
       }
     });
-
     sliverChildren = SliverSections.generateSliverList();
-
     super.initState();
   }
 
   @override
-  void dispose() {
-    lottieController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    bool scrollEnabled = false;
+    final isAnimationCompleted = ref.watch(animationStatusProvider);
+    if (isAnimationCompleted) {
+      _childKey.currentState?.startFadeIn();
+      scrollEnabled = true;
+    }
     return Scaffold(
       body: Stack(
         children: [
@@ -64,12 +47,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               controller: scrollController,
               child: CustomScrollView(
                 controller: scrollController,
-                physics: _scrollEnabled
+                physics: scrollEnabled
                     ? const BouncingScrollPhysics()
                     : const NeverScrollableScrollPhysics(),
-                slivers: sliverChildren.isNotEmpty
-                    ? sliverChildren
-                    : [SliverSections.sliverList[0]],
+                slivers: SliverSections.generateSliverList(),
               ),
             ),
           ),
