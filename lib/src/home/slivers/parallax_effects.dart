@@ -5,9 +5,6 @@ class ParallaxEffects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: Text("Parallax Effects Coming Soon!"),
-    );
+    return Text("Parallax Effects Coming Soon!");
   }
 }

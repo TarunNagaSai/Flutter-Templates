@@ -7,17 +7,14 @@ class CardsSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: Column(
-        children: [
-          Product3DCard(
-            modelUrl: 'assets/3d_models/medium-couch-877.glb',
-            title: 'Premium Couch',
-            price: 500,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Product3DCard(
+          modelUrl: 'assets/3d_models/medium-couch-877.glb',
+          title: 'Premium Couch',
+          price: 500,
+        ),
+      ],
     );
   }
 }

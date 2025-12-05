@@ -5,9 +5,6 @@ class ScrollableLayouts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: Text("Scrollable Slivers Coming Soon!"),
-    );
+    return Text("Scrollable Slivers Coming Soon!");
   }
 }

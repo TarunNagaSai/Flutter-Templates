@@ -5,9 +5,6 @@ class LiveActivities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: Text("Live Activities Coming Soon!"),
-    );
+    return Text("Live Activities Coming Soon!");
   }
 }

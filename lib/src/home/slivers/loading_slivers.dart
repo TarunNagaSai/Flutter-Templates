@@ -5,9 +5,6 @@ class LoadingSlivers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: Text("Clip Art Widgets Coming Soon!"),
-    );
+    return Text("Clip Art Widgets Coming Soon!");
   }
 }

@@ -5,9 +5,6 @@ class CustomPopupsSlivers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: Text("Custom Popup Widgets Coming Soon!"),
-    );
+    return Text("Custom Popup Widgets Coming Soon!");
   }
 }

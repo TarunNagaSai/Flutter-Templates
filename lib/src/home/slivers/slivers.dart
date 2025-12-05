@@ -10,6 +10,7 @@ import 'package:animations/src/home/slivers/parallax_effects.dart';
 import 'package:animations/src/home/slivers/scrollable_layouts.dart';
 import 'package:animations/src/home/slivers/thankyou_sliver.dart';
 import 'package:animations/src/home/slivers/welcome_sliver.dart';
+import 'package:animations/src/home/widgets/layout_widget.dart';
 import 'package:flutter/material.dart';
 
 /// wrap a class around this file
@@ -93,7 +94,12 @@ class SliverSections {
         updatedSliverList.add(
           KeyedSubtree(
             key: sliverKeys[index],
-            child: SliverToBoxAdapter(child: sliverList[index]),
+            child: SliverToBoxAdapter(
+              child: LayoutWidget(
+                onPositionChanged: (val) {},
+                child: sliverList[index],
+              ),
+            ),
           ),
         );
       } else {
